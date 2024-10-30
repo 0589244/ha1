@@ -107,7 +107,41 @@ class CalculatorTest {
         String actual = calc.readScreen();
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    @DisplayName("should display result . after 0")
+    void testPressDotKeyWithoutDigit() {
+        Calculator calc = new Calculator();
+        // Arrange: Bildschirm ist initial "0"
+
+        // Act: Drücke die Dezimal-Taste direkt ohne vorherige Eingabe einer Ziffer
+        calc.pressDotKey();
+        calc.pressDigitKey(8);
+
+        String expected = "0.8";
+        String actual = calc.readScreen();
+        assertEquals(expected, actual);
+    }
+
+
+    @Test
+    @DisplayName("should display zero")
+    void testpressClearKey() {
+        Calculator calc = new Calculator();
+
+        calc.pressDigitKey(7);
+        calc.pressBinaryOperationKey("+");
+        calc.pressDigitKey(5);
+
+
+        calc.pressClearKey();
+        String expected = "7";
+        String actual = calc.readScreen();
+        assertEquals(expected, actual);
+
 
     }
+
 }
 
