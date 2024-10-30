@@ -29,12 +29,21 @@ public class Calculator {
      * @param digit Die Ziffer, deren Taste gedrückt wurde
      */
     public void pressDigitKey(int digit) {
-        if(digit > 9 || digit < 0) throw new IllegalArgumentException();
+        if (digit > 9 || digit < 0) throw new IllegalArgumentException();
 
-        if(screen.equals("0") || latestValue == Double.parseDouble(screen)) screen = "";
-
-        screen = screen + digit;
+        // Wenn "0." im screen steht, die Ziffer anhängen
+        if (screen.equals("0.")) {
+            screen = screen + digit;
+        }
+        // Wenn der Bildschirm "0" anzeigt oder latestValue dem Bildschirmwert entspricht, zurücksetzen
+        else if (screen.equals("0")||  latestValue == Double.parseDouble(screen)) {
+            screen = String.valueOf(digit);
+        } else {
+            // Andernfalls die Ziffer an den aktuellen Inhalt anhängen
+            screen = screen + digit;
+        }
     }
+
 
     /**
      * Empfängt den Befehl der C- bzw. CE-Taste (Clear bzw. Clear Entry).
@@ -45,9 +54,11 @@ public class Calculator {
      * im Ursprungszustand ist.
      */
     public void pressClearKey() {
+        if (screen.equals("0")) {
+            latestOperation = "";
+            latestValue = 0.0;
+        }
         screen = "0";
-        latestOperation = "";
-        latestValue = 0.0;
     }
 
     /**
@@ -94,7 +105,11 @@ public class Calculator {
      * Beim zweimaligem Drücken, oder wenn bereits ein Trennzeichen angezeigt wird, passiert nichts.
      */
     public void pressDotKey() {
-        if(!screen.contains(".")) screen = screen + ".";
+        if (screen.isEmpty()) {
+            screen = "0.";
+        } else if (!screen.contains(".")) {
+            screen = screen + ".";
+        }
     }
 
     /**
